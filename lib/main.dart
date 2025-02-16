@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'bloc/quote_bloc.dart';
 import 'bloc/quote_event.dart';
 import 'bloc/quote_state.dart';
+import 'models/quote_model.dart';
 
 void main() {
   runApp(MyApp());
@@ -46,10 +47,21 @@ class QuoteScreen extends StatelessWidget {
             } else if (state is QuoteLoaded) {
               return Padding(
                 padding: const EdgeInsets.all(16.0),
-                child: Text(
-                  state.quote,
-                  style: TextStyle(fontSize: 18, fontStyle: FontStyle.italic),
-                  textAlign: TextAlign.center,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      state.quote.quote,
+                      style: TextStyle(fontSize: 28, fontStyle: FontStyle.italic),
+                      textAlign: TextAlign.center,
+                    ),
+                    SizedBox(height: 16),
+                    Text(
+                      '- ${state.quote.author}',
+                      style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                      textAlign: TextAlign.center,
+                    ),
+                  ],
                 ),
               );
             } else if (state is QuoteError) {
@@ -59,11 +71,34 @@ class QuoteScreen extends StatelessWidget {
           },
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          context.read<QuoteBloc>().add(FetchQuoteEvent());
-        },
-        child: Icon(Icons.add),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat, // Centra el botón
+      floatingActionButton: Container(
+        width: 200, // Ancho del botón
+        height: 50, // Alto del botón
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(25), // Esquinas redondeadas
+          color: Colors.purple[200], // Color morado claro
+        ),
+        child: ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.purpleAccent,
+            shadowColor: Colors.transparent, // Sin sombra
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8), // Esquinas redondeadas
+            ),
+          ),
+          onPressed: () {
+            context.read<QuoteBloc>().add(FetchQuoteEvent());
+          },
+          child: Text(
+            'Get New Quote',
+            style: TextStyle(
+              fontSize: 20,
+              color: Colors.white, // Texto en blanco
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
       ),
     );
   }

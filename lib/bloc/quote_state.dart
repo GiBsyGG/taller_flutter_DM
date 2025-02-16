@@ -1,3 +1,5 @@
+import '../models/quote_model.dart'; // Importa el modelo
+
 abstract class QuoteState {}
 
 class QuoteInitial extends QuoteState {
@@ -7,7 +9,7 @@ class QuoteInitial extends QuoteState {
 class QuoteLoading extends QuoteState {}
 
 class QuoteLoaded extends QuoteState {
-  final String quote;
+  final QuoteModel quote;
 
   QuoteLoaded(this.quote);
 }
